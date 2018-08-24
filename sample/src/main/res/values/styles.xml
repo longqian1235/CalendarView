@@ -1,0 +1,30 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme"
+        parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/sample_primary</item>
+        <item name="colorPrimaryDark">@color/sample_primary</item>
+        <item name="colorAccent">@color/sample_accent</item>
+    </style>
+
+    <style name="CustomTextAppearance" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textColor">@color/mcv_text_date_light</item>
+        <item name="fontFamily">@font/shirkhand</item>
+    </style>
+    <style name="WeekdayTextAppearance">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:background">#0dffffff</item>
+    </style>
+    <style name="monthTextAppearance">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">21sp</item>
+    </style>
+
+    <style name="dayTextAppearance">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">17sp</item>
+    </style>
+
+</resources>
