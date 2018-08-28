@@ -29,7 +29,7 @@ public class MoranDayFocusDecorator implements DayViewDecorator {
 
   @Override
   public boolean shouldDecorate(CalendarDay day) {
-    return day != null && this.day.equals(day);
+    return day != null && day.equals(this.day);
   }
 
   @Override
@@ -51,11 +51,17 @@ public class MoranDayFocusDecorator implements DayViewDecorator {
 //    setFocusDay(day,false);
 //
 //  }
-  public void setFocusDay(final CalendarDay day,boolean isSelected) {
+  public void setFocusDay(final CalendarDay day,boolean isSelected,boolean isFocus) {
     if(day == null)
       return;
-    this.day = day;
-    this.isSelected = isSelected;
+    if(isFocus){
+      this.day = day;
+      this.isSelected = isSelected;
+    }else{
+      this.day = null;
+      this.isSelected = isSelected;
+    }
+
 
   }
 }

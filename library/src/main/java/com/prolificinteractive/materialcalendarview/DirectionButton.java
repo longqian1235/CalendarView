@@ -25,7 +25,9 @@ class DirectionButton extends ImageView {
     @Override
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
-        setAlpha(enabled ? 1f : 0.1f);
+        setFocusable(enabled);
+        setFocusableInTouchMode(enabled);
+        setAlpha(enabled ? 1f : 0.0f);
     }
 
     private static int getThemeSelectableBackgroundId(Context context) {

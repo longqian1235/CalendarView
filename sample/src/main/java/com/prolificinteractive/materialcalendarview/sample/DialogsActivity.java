@@ -14,12 +14,15 @@ import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateFocusListener;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.format.ArrayWeekDayFormatter;
+import com.prolificinteractive.materialcalendarview.format.TitleFormatter;
 import com.prolificinteractive.materialcalendarview.sample.decorators.MoranDayDecorator;
 import com.prolificinteractive.materialcalendarview.sample.decorators.MoranDayFocusDecorator;
 import com.prolificinteractive.materialcalendarview.sample.decorators.MoranDaySelDecorator;
+import com.prolificinteractive.materialcalendarview.sample.decorators.MoranDayUnFocusDecorator;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashSet;
 
 import butterknife.ButterKnife;
@@ -68,6 +71,7 @@ public class DialogsActivity extends AppCompatActivity {
         private MoranDayDecorator decorator_nor;
         private MoranDaySelDecorator decorator_sel;
         private MoranDayFocusDecorator decorator_focus;
+//        private MoranDayUnFocusDecorator decorator_unFocus;
 
         @NonNull
         @Override
@@ -82,6 +86,7 @@ public class DialogsActivity extends AppCompatActivity {
             decorator_nor = new MoranDayDecorator(getContext());
             decorator_sel = new MoranDaySelDecorator(getContext());
             decorator_focus = new MoranDayFocusDecorator(getContext());
+//            decorator_unFocus = new MoranDayUnFocusDecorator(getContext());
             MaterialCalendarView widget = (MaterialCalendarView) view.findViewById(R.id.calendarView);
 
             widget.addDecorators(decorator_nor,decorator_sel,decorator_focus);
@@ -93,8 +98,20 @@ public class DialogsActivity extends AppCompatActivity {
             widget.setWeekDayTextAppearance(R.style.WeekdayTextAppearance);
             widget.setHeaderTextAppearance(R.style.monthTextAppearance);
             widget.setDateTextAppearance(R.style.dayTextAppearance);
+            widget.setTitleFormatter(new TitleFormatter() {
+                @Override
+                public CharSequence format(CalendarDay day) {
+                    return day.getYear() + "年" + (day.getMonth() + 1) + "月";
+                }
+            });
+
+            Calendar cal_1=Calendar.getInstance();//获取当前日期
+            cal_1.add(Calendar.MONTH, 0);
+            cal_1.set(Calendar.DAY_OF_MONTH,1);//设置为1号,当前日期既为本月第一天
+
             widget.state().edit()
                     .setMinimumDate(CalendarDay.from(CalendarUtils.getInstance()))
+//                    .setMinimumDate(cal_1)
                     .commit();
 
             widget.setOnDateChangedListener(this);
@@ -111,11 +128,11 @@ public class DialogsActivity extends AppCompatActivity {
             HashSet<CalendarDay> hashSet = decorator_sel.getDays();
             if(hashSet != null && hashSet.contains(date)){
                 decorator_sel.removeDay(date);
-                decorator_focus.setFocusDay(date,false);
+                decorator_focus.setFocusDay(date,false,true);
 
             }else{
                 decorator_sel.addOneDay(date);
-                decorator_focus.setFocusDay(date,true);
+                decorator_focus.setFocusDay(date,true,true);
 
             }
             widget.invalidateDecorators();
@@ -126,9 +143,9 @@ public class DialogsActivity extends AppCompatActivity {
         public void onDateFocus(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean isFocus) {
             HashSet<CalendarDay> hashSet = decorator_sel.getDays();
             if(hashSet != null && hashSet.contains(date)){
-                decorator_focus.setFocusDay(date,true);
+                decorator_focus.setFocusDay(date,true, isFocus);
             }else{
-                decorator_focus.setFocusDay(date,false);
+                decorator_focus.setFocusDay(date,false, isFocus);
             }
 //            decorator_focus.setFocusDay(date,isFocus);
             widget.invalidateDecorators();

@@ -1,8 +1,10 @@
 package com.prolificinteractive.materialcalendarview;
 
+import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
@@ -71,6 +73,7 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 weekDayView.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
             }
+            weekDayView.setBackgroundColor(Color.parseColor("#0dffffff"));
             weekDayViews.add(weekDayView);
             addView(weekDayView);
             calendar.add(DATE, 1);
@@ -84,14 +87,17 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
     protected void addDayView(Collection<DayView> dayViews, Calendar calendar, boolean isFirst) {
         CalendarDay day = CalendarDay.from(calendar);
         DayView dayView = new DayView(getContext(), day);
+
         dayView.setFocusableInTouchMode(true);
         dayView.setFocusable(true);
+
         if(isFirst){
             dayView.requestFocus();
         }
         dayView.setOnClickListener(this);
         dayView.setOnLongClickListener(this);
         dayView.setOnFocusChangeListener(this);
+
         dayViews.add(dayView);
         addView(dayView, new LayoutParams());
 
@@ -240,8 +246,10 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
         if (v instanceof DayView){
             final DayView dayView = (DayView) v;
             mcv.onDateFocus(dayView,hasFocus);
+
         }
     }
+
 
     /*
      * Custom ViewGroup Code

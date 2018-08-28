@@ -14,6 +14,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.AppCompatTextView;
+import android.text.Layout;
 import android.util.AttributeSet;
 import android.util.SparseArray;
 import android.util.TypedValue;
@@ -259,9 +260,13 @@ public class MaterialCalendarView extends ViewGroup {
 
         buttonPast = new DirectionButton(getContext());
         buttonPast.setContentDescription(getContext().getString(R.string.previous));
+        buttonPast.setFocusableInTouchMode(true);
+        buttonPast.setFocusable(true);
         title = new AppCompatTextView(getContext());
         buttonFuture = new DirectionButton(getContext());
         buttonFuture.setContentDescription(getContext().getString(R.string.next));
+        buttonFuture.setFocusable(true);
+        buttonFuture.setFocusableInTouchMode(true);
         pager = new CalendarPager(getContext());
 
         buttonPast.setOnClickListener(onClickListener);
@@ -327,10 +332,10 @@ public class MaterialCalendarView extends ViewGroup {
                 setTileHeight(tileHeight);
             }
 
-            setArrowColor(a.getColor(
-                    R.styleable.MaterialCalendarView_mcv_arrowColor,
-                    Color.BLACK
-            ));
+//            setArrowColor(a.getColor(
+//                    R.styleable.MaterialCalendarView_mcv_arrowColor,
+//                    Color.BLACK
+//            ));
             Drawable leftMask = a.getDrawable(
                     R.styleable.MaterialCalendarView_mcv_leftArrowMask
             );
@@ -412,25 +417,34 @@ public class MaterialCalendarView extends ViewGroup {
     private void setupChildren() {
         topbar = new LinearLayout(getContext());
         topbar.setOrientation(LinearLayout.HORIZONTAL);
-        topbar.setClipChildren(false);
-        topbar.setClipToPadding(false);
-        addView(topbar, new LayoutParams(1));
+//        topbar.setClipChildren(false);
+//        topbar.setClipToPadding(false);
+//        addView(topbar, new LayoutParams(1));
+        LayoutParams layoutParams = new LayoutParams(386,1);
+        addView(topbar,layoutParams);
 
+        View view_left = new View(getContext());
+        topbar.addView(view_left,new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT,1));
         buttonPast.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-        topbar.addView(buttonPast, new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT, 1));
+        topbar.addView(buttonPast, new LinearLayout.LayoutParams(18, LayoutParams.MATCH_PARENT));
 
         title.setGravity(Gravity.CENTER);
         topbar.addView(title, new LinearLayout.LayoutParams(
-                0, LayoutParams.MATCH_PARENT, DEFAULT_DAYS_IN_WEEK - 2
+                250, LayoutParams.MATCH_PARENT
         ));
 
         buttonFuture.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-        topbar.addView(buttonFuture, new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT, 1));
+        topbar.addView(buttonFuture, new LinearLayout.LayoutParams(18, LayoutParams.MATCH_PARENT));
+
+        View view_right = new View(getContext());
+        topbar.addView(view_right,new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT,1));
 
         pager.setId(R.id.mcv_pager);
         pager.setOffscreenPageLimit(1);
         int tileHeight = showWeekDays ? calendarMode.visibleWeeksCount + DAY_NAMES_ROW : calendarMode.visibleWeeksCount;
-        addView(pager, new LayoutParams(tileHeight));
+        LayoutParams layoutParams1 = new LayoutParams(tileHeight);
+        layoutParams1.topMargin = 28;
+        addView(pager, layoutParams1);
     }
 
     private void updateUi() {
@@ -1864,6 +1878,10 @@ public class MaterialCalendarView extends ViewGroup {
          */
         public LayoutParams(int tileHeight) {
             super(MATCH_PARENT, tileHeight);
+        }
+
+        public LayoutParams(int tileWidth, int tileHeight){
+            super(tileWidth,tileHeight);
         }
 
     }

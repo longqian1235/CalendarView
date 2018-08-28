@@ -60,7 +60,7 @@ class TitleChanger {
             return;
         }
 
-        doChange(currentTime, currentMonth, true);
+        doChange(currentTime, currentMonth, false);
     }
 
     private void doChange(final long now, final CalendarDay currentMonth, boolean animate) {
